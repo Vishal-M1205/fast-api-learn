@@ -11,6 +11,7 @@ from db_engine import conn_url
 
 engine = create_engine(
     url=conn_url,
+    poolclass=QueuePool,  #! By default it is queue pool
     pool_size=3,
     max_overflow=10,
     pool_pre_ping=True,
