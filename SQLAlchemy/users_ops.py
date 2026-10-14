@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, URL, select
+from sqlalchemy import create_engine, URL, select, update
 from sqlalchemy.pool import QueuePool
 from sqlalchemy.orm import Session, sessionmaker
 from declarative_base import User, Base, Tasks
@@ -49,7 +49,7 @@ SessionContext = sessionmaker(bind=engine)
 
     user.name = "Vikas" """
 
-#! scalars() return the object , execute() return the text
+""" #! scalars() return the object , execute() return the ResultObject
 
 with SessionContext.begin() as session:
     query = select(User.name, User.age).where(User.name == "Vikas")
@@ -60,4 +60,44 @@ with SessionContext.begin() as session:
     print(
         session.scalars(query).all()
     )  #! scalars get all the value of the first selected column
-    print(session.scalar(query))  #! get the first column first row value
+    print(session.scalar(query))  #! get the first column first row value """
+
+
+"""with SessionContext.begin() as session:
+    stmnt = select(User)
+    users = session.scalars(stmnt).all()
+    for u in users:
+        print(u.name)"""
+
+"""with SessionContext.begin() as session:
+    stmnt = update(User).where(User.id == 1).values(name="Vishal").returning(User)
+
+    #! Usually the update statement won't return the row , so use returning
+
+    #! The approach is used for delete, insert for insert no 'where'
+
+    user = session.execute(stmnt)
+
+    user = user.scalar()
+
+    print(user.name)
+    print(user.age)"""
+
+
+"""with SessionContext.begin() as session:
+    users = [
+        User(name="Vishal", email="vish@gmail.com", age=21),
+        User(name="Aarav", email="aarav@gmail.com", age=23),
+        User(name="Priya", email="priya@gmail.com", age=22),
+        User(name="Rohan", email="rohan@gmail.com", age=25),
+    ]
+
+    session.add_all(users)
+    session.commit()"""
+
+
+with SessionContext.begin() as session:
+    user = session.get(User, 1)
+    task = Tasks(title="Dance")
+
+    user.tasks.append(task)

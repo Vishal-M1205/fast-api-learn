@@ -5,7 +5,7 @@
 #! This doesn't create the table, it is just a representation
 
 from sqlalchemy import String, ForeignKey, CheckConstraint, Index, MetaData
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 #! use the DeclarativeBase to define the ORM and extract  mapped info from the python classes
 
@@ -83,6 +83,8 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True)
     age: Mapped[int | None]
 
+    tasks: Mapped[list["Tasks"]] = relationship(back_populates="user")
+
     #! id: Mapped[int] = mapped_column(primary_key=True)
     # * We don't need SERIAL in postgres because , new id is generated
     # * beecause of int-primary-key declaraton in sqlal
@@ -98,6 +100,8 @@ class Tasks(Base):
     #! If no String auto to VARCHAR()
 
     user_id: Mapped[int] = mapped_column(ForeignKey(column="users.id"))
+
+    user: Mapped["User"] = relationship(back_populates="tasks")
 
     #! This is how foreign keys are mapped , the "users" is the
 
