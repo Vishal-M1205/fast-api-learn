@@ -1,7 +1,7 @@
-from sqlalchemy import create_engine, URL, select, update
+from sqlalchemy import String, create_engine, URL, select, update, ForeignKey, Integer
 from sqlalchemy.pool import QueuePool
-from sqlalchemy.orm import Session, sessionmaker
-from declarative_base import User, Base, Tasks
+from sqlalchemy.orm import Session, sessionmaker, Mapped, relationship, mapped_column
+from declarative_base import User, Base, Tasks, metadata
 
 conn_url = URL.create(
     drivername="postgresql+psycopg",
@@ -23,7 +23,7 @@ engine = create_engine(
     pool_pre_ping=True,
 )
 
-Base.metadata.create_all(bind=engine)
+#! Base.metadata.create_all(bind=engine)
 
 #! SessionContext = Session(bind=engine) creates one Session with its own config if another Session need
 #! to be created, need to repeat the config again
@@ -93,11 +93,11 @@ with SessionContext.begin() as session:
     ]
 
     session.add_all(users)
-    session.commit()"""
+    """
 
 
-with SessionContext.begin() as session:
+"""with SessionContext.begin() as session:
     user = session.get(User, 1)
     task = Tasks(title="Dance")
 
-    user.tasks.append(task)
+    user.tasks.append(task)"""
