@@ -1,15 +1,15 @@
 from typing import AsyncGenerator
-
+from app.core.config import config
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy import URL
 
 conn_url = URL.create(
-    drivername="postgresql+asyncpg",
-    password="CG-vak123",
-    username="postgres",
-    host="localhost",
-    port=5432,
-    database="security_practice",
+    drivername=config.db_drivername,
+    password=config.db_password,
+    username=config.db_username,
+    host=config.db_host,
+    port=config.db_port,
+    database=config.db_database,
 )
 
 engine = create_async_engine(url=conn_url)

@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
 
-from app.routes.auth_routes import route as auth_router
+from app.routers.auth_routes import route as auth_router
 
 app = FastAPI(title="API Security Practice")
 
